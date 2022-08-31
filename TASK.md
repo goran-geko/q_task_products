@@ -1,5 +1,4 @@
 # 1. Introduction
-
 This task is used as a skill assessment assignment which Q uses in its selection process to determine
 the best candidate for the job. All test assignments should be solvable within a maximum of 8 hours by
 an experienced developer. These assignments are not a part of any client project and are not a part
