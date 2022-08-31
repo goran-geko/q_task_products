@@ -19,3 +19,13 @@ def rating_post_save(sender, instance=None, created=None, **kwargs):
     rating = Rating.objects.filter(product=product).aggregate(Avg('rating')).get('rating__avg')
     product.rating = rating
     product.save()
+
+    '''
+    Better approach to this would be to calculate this average as async celery task:
+    
+    from products.tasks import calculate_average_rating
+    calculate_average_rating.delay(product_id=instance.product.pk)
+    
+    I will leave it as is for now but we would need to add celery as dependency and configure 2 new containers.
+    One for celery (worker) and one with redis instance (or any other queue management tool).
+    '''
