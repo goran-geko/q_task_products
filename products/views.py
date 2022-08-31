@@ -25,7 +25,7 @@ class ProductCreateAPIView(CreateAPIView):
     def post(self, request, pk, *args, **kwargs):
         try:
             product = Product.objects.get(pk=pk)
-        except Product.DoesNotExist as e:
+        except Product.DoesNotExist:
             raise Exception('Product does not exist')
         user = request.auth.user
         rating = request.data.get('rating', None)
