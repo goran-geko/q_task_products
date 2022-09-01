@@ -5,13 +5,13 @@ from products.models import Product
 
 
 class ProductSerializer(ModelSerializer):
-    ratings = SerializerMethodField()
+    rating_set = SerializerMethodField()
 
     class Meta:
         model = Product
-        fields = ('id', 'name', 'price', 'rating', 'updated_at', 'ratings')
-        read_only_fields = ['id', 'ratings']
+        fields = ('id', 'name', 'price', 'rating', 'updated_at', 'rating_set')
+        read_only_fields = ['id', 'rating_set']
 
     @staticmethod
-    def get_ratings(instance: Product):
+    def get_rating_set(instance: Product):
         return [rating.rating for rating in instance.rating_set.all()]
