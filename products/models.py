@@ -14,8 +14,7 @@ class Product(ProductAbstract):
     name = models.CharField(max_length=256, unique=True)
     price = models.DecimalField(decimal_places=2, max_digits=8)
     updated_at = models.DateTimeField(null=True, auto_now=True)
-    # TODO: Rename `ratings` filed to `users` as this makes more sense :)
-    ratings = models.ManyToManyField(User, through='Rating')
+    users = models.ManyToManyField(User, through='Rating')
 
 
 class Rating(ProductAbstract):
