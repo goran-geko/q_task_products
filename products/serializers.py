@@ -12,5 +12,6 @@ class ProductSerializer(ModelSerializer):
         fields = ('id', 'name', 'price', 'rating', 'updated_at', 'ratings')
         read_only_fields = ['id', 'ratings']
 
-    def get_ratings(self, instance: Product):
+    @staticmethod
+    def get_ratings(instance: Product):
         return [rating.rating for rating in instance.rating_set.all()]
