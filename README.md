@@ -23,6 +23,10 @@ Populate `products` index:
 
 `docker-compose exec web python manage.py search_index --populate`
 
+Run all tests:
+
+`docker-compose exec web python manage.py test products`
+
 # Notes to myself
 We can generate fixtures from DB by running this command:
 
