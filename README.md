@@ -26,7 +26,7 @@ Populate `products` index:
 # Notes to myself
 We can generate fixtures from DB by running this command:
 
-`dc exec web python manage.py dumpdata -o products/fixtures.json products auth.User authtoken.Token`
+`docker-compose exec web python manage.py dumpdata -o products/fixtures.json products auth.User authtoken.Token`
 
 # Future ideas
 
