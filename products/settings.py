@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_filters',
+    'django_elasticsearch_dsl',
     'rest_framework',
     'rest_framework.authtoken',
     'products',
@@ -144,3 +145,9 @@ REST_FRAMEWORK = {
 }
 
 ORDERING_PARAM = 'ordering'
+
+ELASTICSEARCH_DSL = {
+    'default': {
+        'hosts': os.getenv("ELASTICSEARCH_DSL_HOSTS", 'es:9200')
+    },
+}

@@ -15,6 +15,14 @@ Run fixtures to insert dummy data:
 
 `docker-compose exec web python manage.py loaddata products/fixtures.json`
 
+Create `products` index:
+
+`docker-compose exec web python manage.py search_index --create`
+
+Populate `products` index:
+
+`docker-compose exec web python manage.py search_index --populate`
+
 # Notes to myself
 We can generate fixtures from DB by running this command:
 
