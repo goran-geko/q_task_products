@@ -25,6 +25,11 @@ class ProductListCreateAPIView(ListCreateAPIView):
     """
 
     def get_queryset(self):
+        """
+        Will fetch data from DB or from elasticsearch depending on `source` param:
+        1. `source=db` - fetching from DB
+        2. `source=es` - fetching from elasticsearch
+        """
         if self.request.GET.get('source') == 'es':
             """
             Really basic example just to show fetching from elasticsearch. to_queryset() will make a hit to DB (by IDs)
