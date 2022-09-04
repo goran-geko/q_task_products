@@ -4,6 +4,7 @@ from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIV
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK
 
+from products.documents import ProductDocument
 from products.models import Product, Rating
 from products.serializers import ProductSerializer
 
@@ -12,13 +13,20 @@ class ProductListCreateAPIView(ListCreateAPIView):
     serializer_class = ProductSerializer
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     filterset_fields = ['id', 'name', 'price', 'updated_at', 'users']
-    '''
+    """
     As field `users` is `ManyToManyField` relation, filter will look if value exists in list of related pk's.
     We could enable searching by other field by creating custom `filterset_class` class. This also goes for field
     `rating_set` which is one to many relation from `Product` to `Rating` aggregation
-    '''
+    """
 
     def get_queryset(self):
+        if self.request.GET.get('source') == 'es':
+            """
+            Really basic example just to show fetching from elasticsearch. to_queryset() will make a hit to DB (by IDs)
+            and after that filters are applied. Not the best case as we can use elasticsearch to filter results as well.
+            Implementation of elasticsearch would differ based on project specifications.
+            """
+            return ProductDocument.search().to_queryset()
         return Product.objects.all()
 
 
