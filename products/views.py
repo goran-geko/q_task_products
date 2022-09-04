@@ -6,7 +6,7 @@ from rest_framework.status import HTTP_200_OK
 
 from products.documents import ProductDocument
 from products.models import Product, Rating
-from products.serializers import ProductSerializer
+from products.serializers import ProductSerializer, RatingSerializer
 
 
 class ProductListCreateAPIView(ListCreateAPIView):
@@ -53,10 +53,12 @@ class ProductRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
         return Product.objects.all()
 
 
-class ProductCreateAPIView(CreateAPIView):
+class RatingCreateAPIView(CreateAPIView):
     """
     API View that provides user an option to rate an product using `post` method
     """
+    serializer_class = RatingSerializer
+
     def post(self, request, pk, *args, **kwargs):
         # Fetching product, raise exception if not found
         try:

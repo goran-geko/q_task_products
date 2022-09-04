@@ -15,10 +15,10 @@ Including another URLconf
 """
 from django.urls import path
 
-from products.views import ProductListCreateAPIView, ProductRetrieveUpdateDestroyAPIView, ProductCreateAPIView
+from products.views import ProductListCreateAPIView, ProductRetrieveUpdateDestroyAPIView, RatingCreateAPIView
 
 urlpatterns = [
     path('product/', ProductListCreateAPIView.as_view(), name='product_list_create'),
     path('product/<int:pk>/', ProductRetrieveUpdateDestroyAPIView.as_view(), name='product_retrieve_update_destroy'),
-    path('product/<int:pk>/rate/', ProductCreateAPIView.as_view(), name='product_create'),
+    path('product/<int:pk>/rate/', RatingCreateAPIView.as_view(), name='product_create'),
 ]

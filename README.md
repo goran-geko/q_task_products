@@ -32,6 +32,10 @@ We can generate fixtures from DB by running this command:
 
 `docker-compose exec web python manage.py dumpdata -o products/fixtures.json products auth.User authtoken.Token`
 
+We can generate OpenAPI documentation by running this command:
+
+`docker-compose exec web python manage.py generateschema --file docs/api-opanapi.yml`
+
 # Future ideas
 
 1. Using keycloak as user directory

@@ -1,0 +1,288 @@
+openapi: 3.0.2
+info:
+  title: ''
+  version: ''
+paths:
+  /product/:
+    get:
+      operationId: listProducts
+      description: 'API View that provides user an option to:
+
+        1. list products using `get` method
+
+        2. create product using `post` method'
+      parameters:
+      - name: limit
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: offset
+        required: false
+        in: query
+        description: The initial index from which to return the results.
+        schema:
+          type: integer
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    example: 123
+                  next:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?offset=400&limit=100
+                  previous:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?offset=200&limit=100
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Product'
+          description: ''
+      tags:
+      - product
+    post:
+      operationId: createProduct
+      description: 'API View that provides user an option to:
+
+        1. list products using `get` method
+
+        2. create product using `post` method'
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Product'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+          description: ''
+      tags:
+      - product
+  /product/{id}/:
+    get:
+      operationId: retrieveProduct
+      description: 'API View that provides user an option to:
+
+        1. retrieve product using `get` method
+
+        2. update product using `put` and `patch` methods
+
+        3. destroy product using `destroy` method'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+          description: ''
+      tags:
+      - product
+    put:
+      operationId: updateProduct
+      description: 'API View that provides user an option to:
+
+        1. retrieve product using `get` method
+
+        2. update product using `put` and `patch` methods
+
+        3. destroy product using `destroy` method'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Product'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+          description: ''
+      tags:
+      - product
+    patch:
+      operationId: partialUpdateProduct
+      description: 'API View that provides user an option to:
+
+        1. retrieve product using `get` method
+
+        2. update product using `put` and `patch` methods
+
+        3. destroy product using `destroy` method'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Product'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+          description: ''
+      tags:
+      - product
+    delete:
+      operationId: destroyProduct
+      description: 'API View that provides user an option to:
+
+        1. retrieve product using `get` method
+
+        2. update product using `put` and `patch` methods
+
+        3. destroy product using `destroy` method'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+      tags:
+      - product
+  /product/{id}/rate/:
+    post:
+      operationId: createRating
+      description: API View that provides user an option to rate an product using
+        `post` method
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Rating'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Rating'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Rating'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Rating'
+          description: ''
+      tags:
+      - product
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 256
+        price:
+          type: string
+          format: decimal
+          multipleOf: 0.01
+          maximum: 1000000
+          minimum: -1000000
+        rating:
+          type: number
+          maximum: 5.0
+          minimum: 0.0
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        rating_set:
+          type: string
+          readOnly: true
+      required:
+      - name
+      - price
+      - rating
+    Rating:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        user:
+          type: string
+          readOnly: true
+        product:
+          type: string
+          readOnly: true
+        rating:
+          type: number
+          maximum: 5.0
+          minimum: 0.0
+      required:
+      - rating

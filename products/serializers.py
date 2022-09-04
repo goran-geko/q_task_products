@@ -1,7 +1,7 @@
 from rest_framework.fields import SerializerMethodField
 from rest_framework.serializers import ModelSerializer
 
-from products.models import Product
+from products.models import Product, Rating
 
 
 class ProductSerializer(ModelSerializer):
@@ -19,3 +19,13 @@ class ProductSerializer(ModelSerializer):
     @staticmethod
     def get_rating_set(instance: Product):
         return [rating.rating for rating in instance.rating_set.all()]
+
+
+class RatingSerializer(ModelSerializer):
+    """
+    Serializer for `Rating` model.
+    """
+    class Meta:
+        model = Rating
+        fields = ('id', 'user', 'product', 'rating')
+        read_only_fields = ['id', 'user', 'product']
