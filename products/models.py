@@ -4,6 +4,9 @@ from django.db import models
 
 
 class ProductAbstract(models.Model):
+    """
+    Inherits `models.Model` and will be inherited by `Product` and `Rating` models as both will have `rating` field
+    """
     rating = models.FloatField(validators=[MinValueValidator(0.0), MaxValueValidator(5.0)])
 
     class Meta:
@@ -11,6 +14,9 @@ class ProductAbstract(models.Model):
 
 
 class Product(ProductAbstract):
+    """
+    Main model in this app. Stores product records in DB.
+    """
     name = models.CharField(max_length=256, unique=True)
     price = models.DecimalField(decimal_places=2, max_digits=8)
     updated_at = models.DateTimeField(null=True, auto_now=True)
@@ -18,5 +24,9 @@ class Product(ProductAbstract):
 
 
 class Rating(ProductAbstract):
+    """
+    Model that will be used as aggregation between `Product` and `User` models. We need to store custom field `rating`
+    into it so that is why we cannot use standard `ManyToManyField` relation without `through` argument.
+    """
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='rating_set')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='rating_set')

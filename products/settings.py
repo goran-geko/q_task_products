@@ -152,5 +152,6 @@ ELASTICSEARCH_DSL = {
         'hosts': os.getenv("ELASTICSEARCH_DSL_HOSTS", 'es:9200')
     },
 }
+# makes sure that app don't sync models with elasticsearch documents while running tests
 if 'test' in sys.argv:
     ELASTICSEARCH_DSL_AUTOSYNC = False

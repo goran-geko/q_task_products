@@ -13,7 +13,6 @@ class BaseTest(APITestCase):
     """
     Base test class that will be inherited by every test class in this file
     """
-
     def setUp(self):
         self.user1 = User.objects.create(username='tester1')
         self.user2 = User.objects.create(username='tester2')

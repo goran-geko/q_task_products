@@ -10,6 +10,11 @@ from products.serializers import ProductSerializer
 
 
 class ProductListCreateAPIView(ListCreateAPIView):
+    """
+    API View that provides user an option to:
+    1. list products using `get` method
+    2. create product using `post` method
+    """
     serializer_class = ProductSerializer
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     filterset_fields = ['id', 'name', 'price', 'updated_at', 'users']
@@ -31,6 +36,12 @@ class ProductListCreateAPIView(ListCreateAPIView):
 
 
 class ProductRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
+    """
+    API View that provides user an option to:
+    1. retrieve product using `get` method
+    2. update product using `put` and `patch` methods
+    3. destroy product using `destroy` method
+    """
     serializer_class = ProductSerializer
 
     def get_queryset(self):
@@ -38,19 +49,26 @@ class ProductRetrieveUpdateDestroyAPIView(RetrieveUpdateDestroyAPIView):
 
 
 class ProductCreateAPIView(CreateAPIView):
-
+    """
+    API View that provides user an option to rate an product using `post` method
+    """
     def post(self, request, pk, *args, **kwargs):
+        # Fetching product, raise exception if not found
         try:
             product = Product.objects.get(pk=pk)
         except Product.DoesNotExist:
             raise Exception('Product does not exist')
+        # Fetching currently logged user
         user = request.auth.user
+        # Fetching `rating` from request, raise exception if not provided
         rating = request.data.get('rating', None)
         if not rating:
             raise Exception('Rating is not set')
+        # Disable option to rate a product for a user if user already rated that product
         if Rating.objects.filter(product=product, user=user).exists():
             # We could update rating here if we want to support that feature
             raise Exception('This user already voted')
         else:
+            # Rate product, will emit `post_save` signal that is handled in `rating_post_save` method
             Rating.objects.create(product=product, user=user, rating=rating)
         return Response(status=HTTP_200_OK)

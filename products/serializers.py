@@ -5,6 +5,10 @@ from products.models import Product
 
 
 class ProductSerializer(ModelSerializer):
+    """
+    Serializer for `Product` model.
+    Can't be used to update `rating_set` (`Rating` model).
+    """
     rating_set = SerializerMethodField()
 
     class Meta:
