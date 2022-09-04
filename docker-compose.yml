@@ -32,3 +32,18 @@ services:
     depends_on:
       - db
       - es
+  redis:
+    image: redis:7.0.4
+  worker:
+    build: .
+    command: celery -A products worker --loglevel=INFO
+    volumes:
+      - .:/code
+    environment:
+      - POSTGRES_NAME=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    depends_on:
+      - redis
+      - db
+      - web

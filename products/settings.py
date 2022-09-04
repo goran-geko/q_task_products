@@ -153,5 +153,7 @@ ELASTICSEARCH_DSL = {
     },
 }
 # makes sure that app don't sync models with elasticsearch documents while running tests
+IS_TEST = False
 if 'test' in sys.argv:
+    IS_TEST = True
     ELASTICSEARCH_DSL_AUTOSYNC = False

@@ -1,8 +1,9 @@
-from django.db.models import Avg
+from django.conf import settings
 from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
 
 from products.models import Product, Rating
+from products.tasks import calculate_average_rating
 
 
 @receiver(pre_save, sender=Product)
@@ -21,17 +22,9 @@ def rating_post_save(sender, instance=None, created=None, **kwargs):
     """
     Will be triggered just after SQL is executed to create a Rating
     """
-    product = instance.product
-    rating = Rating.objects.filter(product=product).aggregate(Avg('rating')).get('rating__avg')
-    product.rating = rating
-    product.save()
-
-    """
-    Better approach to this would be to calculate this average as async celery task:
-    
-    from products.tasks import calculate_average_rating
-    calculate_average_rating.delay(product_id=instance.product.pk)
-    
-    I will leave it as is for now but we would need to add celery as dependency and configure 2 new containers.
-    One for celery (worker) and one with redis instance (or any other queue management tool).
-    """
+    if settings.IS_TEST:
+        # If we are running tests, method will be executed in same thread (synchronous).
+        calculate_average_rating(product_id=instance.product.pk)
+    else:
+        # In real environment, it will be sent to broker so that can be picked up by worker.
+        calculate_average_rating.delay(product_id=instance.product.pk)
