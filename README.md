@@ -39,6 +39,5 @@ We can generate OpenAPI documentation by running this command:
 # Future ideas
 
 1. Using keycloak as user directory
-2. Running average rating calculation as an async task on celery
-3. Caching API views
-4. ...
+2. Caching API views
+3. ...
